@@ -7,6 +7,9 @@ def user_post_directory_path(instance, file_name):
 
     return 'posts/user_{0}/{1}'.format(instance.user.username, file_name)
 
+def user_directory_path(instance, file_name):
+
+    return 'user/user_{0}/{1}'.format(instance.username, file_name)
 
 class CustomUser(AbstractUser):
 

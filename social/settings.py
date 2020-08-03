@@ -38,6 +38,7 @@ CACHES = {
     }
 }
 
+AUTH_USER_MODEL = 'test1.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_CLASSES': [
