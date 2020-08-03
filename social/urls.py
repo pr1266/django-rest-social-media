@@ -3,11 +3,15 @@ from django.urls import path, include
 from test1.views import *
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.urls import re_path
 admin.site.site_header = "King's Social Media"
 admin.site.index_title = 'Social Media Project Details'
 
 urlpatterns = [
+    # path('totp/create/', TOTPCreateView.as_view(), name = 'totp-create'),
+    # path('totp/login/<str:token>/', TOTPVerifyView.as_view(), name = 'totp-login'),
+    re_path(r'^totp/create/$', TOTPCreateView.as_view(), name='totp-create'),
+    re_path(r'^totp/login/(?P<token>[0-9]{6})/$', TOTPVerifyView.as_view(), name='totp-login'),
     path('admin/', admin.site.urls),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     #? inja ham faghat marboot be social medias:

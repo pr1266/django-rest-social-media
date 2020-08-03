@@ -5,13 +5,19 @@ from rest_framework import status
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django_otp import devices_for_user
+from django_otp.plugins.otp_totp.models import TOTPDevice
 from .serializers import *
 from .permissions import *
 from .models import *
+from datetime import datetime
+import pyotp
+import base64
 
 #! Follow:
 class FollowDetailUpdateDeleteAPIView(APIView):
@@ -395,3 +401,39 @@ class PostComments(APIView):
         obj = Post.objects.get(pk = pk)
         ser_obj = PostCommentsSerializer(obj)
         return Response(ser_obj.data)
+
+
+
+def get_user_totp_device(self, user, confirmed=None):
+    devices = devices_for_user(user, confirmed=confirmed)
+    for device in devices:
+        if isinstance(device, TOTPDevice):
+            return device
+
+class TOTPCreateView(APIView):
+    """
+    Use this endpoint to set up a new TOTP device
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format = None):
+        user = request.user
+        device = get_user_totp_device(self, user)
+        if not device:
+            device = user.totpdevice_set.create(confirmed = False)
+        url = device.config_url
+        return Response(url, status = status.HTTP_201_CREATED)
+
+class TOTPVerifyView(APIView):
+    
+    permission_classes = [permissions.IsAuthenticated]
+    def post(self, request, token, format = None):
+        user = request.user
+        
+        device = get_user_totp_device(self, user)
+        print(device.verify_token(token))
+        if not device == None and device.verify_token(token):
+            if not device.confirmed:
+                device.confirmed = True
+                device.save()
+            return Response(True, status = status.HTTP_200_OK)
+        return Response(status = status.HTTP_400_BAD_REQUEST)

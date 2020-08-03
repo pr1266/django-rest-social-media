@@ -94,7 +94,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'social.wsgi.application'
 
-AUTHENTICATION_BACKENDS = ['test1.custom_auth',]
+#AUTHENTICATION_BACKENDS = ['test1.custom_auth',]
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
