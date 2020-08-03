@@ -9,6 +9,7 @@ admin.site.index_title = 'Social Media Project Details'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     #? inja ham faghat marboot be social medias:
     #! Follow:
     path('follow/', FollowListCreateView.as_view()),

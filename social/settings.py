@@ -19,6 +19,8 @@ INSTALLED_APPS = [
     'test1',
     'oauth2_provider',
     'rest_framework',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 ]
 
 
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 ROOT_URLCONF = 'social.urls'
@@ -91,7 +94,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'social.wsgi.application'
 
-
+AUTHENTICATION_BACKENDS = ['test1.custom_auth',]
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
