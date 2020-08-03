@@ -6,8 +6,8 @@ from test1 import views as test1_view
 from django.conf import settings
 from django.conf.urls.static import static
 
-admin.site.site_header = "King's Muscle Media"
-admin.site.index_title = 'Muscle Media Project Details'
+admin.site.site_header = "King's Social Media"
+admin.site.index_title = 'Social Media Project Details'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
