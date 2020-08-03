@@ -39,4 +39,3 @@ class LikeCustomPermission(permissions.BasePermission):
             return True
         
         return request.user == obj.post.user
-        
